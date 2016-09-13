@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html  ng-app="got">
+	<head>
+		<title>Home- Game Of Thrones Battles!</title>
+		<!-- <link rel="stylesheet" href="../stylesheets/style.css"> -->
+		<link rel="stylesheet" href="../stylesheets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../stylesheets/dataurl.css">
+		<!-- will add font awesome if times permit -->
+		<style>
+		#display-data{
+			margin-top:1%;
+		}
+		.header-box{
+			background-color: #e0e0d0;
+			border-right:1px solid;
+		/* 	border-bottom:1px solid; */
+			border-top:1px solid;
+		}
+		.body-box{
+			background-color:#fdfdfd;
+		/* 	border-right:1px solid; */
+		/* 	border-bottom:1px solid; */
+			border-top:1px solid;
+		}
+		</style>
+	</head>
+	<body ng-controller="gotDataController">
+		
+		<!-- navigation starts! -->
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="navbar-header">
+							<a class="navbar-brand" href="#"><strong> Game Of Thrones - </strong><span class="secondary"> death is uncertain! </span></a>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div id="showAlertMessages">
+							<!-- Show here alert messages -->
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</nav><!-- end of navigation! -->
+		
+		<!--  main code starts! -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-10" id="left-panel">
+					<div class="row" id="search-bar">
+						<div class="col-md-2">
+							<h4>Search battle by : </h4>
+						</div>
+						<div class="col-md-4">
+							<div class="btn-group" role="group" aria-label="...">
+  								<button type="button" class="btn btn-primary" ng-click="changeSelectedType('Name')">Name</button>
+  								<button type="button" class="btn btn-primary" ng-click="changeSelectedType('King')">King</button>
+ 								<button type="button" class="btn btn-primary" ng-click="changeSelectedType('Type')">Type</button>
+								<button type="button" class="btn btn-primary" ng-click="changeSelectedType('Location')">Location</button> 								
+							</div>
+						</div>
+						<div class="col-md-4">
+								<div class="input-group" ng-show="selectedType=='Name'">
+      								<input type="text" class="form-control" ng-model="search" placeholder="Search battle by {{selectedType}}" uib-typeahead="find for find in Name | filter:$viewValue | limitTo:10">
+      								<span class="input-group-btn">
+       							    <button class="btn btn-primary" ng-click="searchSpecific()" type="button"><span class="glyphicon glyphicon-search"></span> </button>
+     							    </span>
+  							    </div><!-- /input-group -->
+  							    <div class="input-group"  ng-show="selectedType=='King'">
+      								<input type="text" class="form-control" ng-model="search" placeholder="Search battle by {{selectedType}}" uib-typeahead="find for find in King | filter:$viewValue | limitTo:10">
+      								<span class="input-group-btn">
+       							    <button class="btn btn-primary" ng-click="searchSpecific()" type="button"><span class="glyphicon glyphicon-search"></span> </button>
+     							    </span>
+  							    </div><!-- /input-group -->
+  							    <div class="input-group"  ng-show="selectedType=='Type'">
+      								<input type="text" class="form-control" ng-model="search" placeholder="Search battle by {{selectedType}}" uib-typeahead="find for find in Type | filter:$viewValue | limitTo:10">
+      								<span class="input-group-btn">
+       							    <button class="btn btn-primary" ng-click="searchSpecific()" type="button"><span class="glyphicon glyphicon-search"></span> </button>
+     							    </span>
+  							    </div><!-- /input-group -->
+  							    <div class="input-group"  ng-show="selectedType=='Location'">
+      								<input type="text" class="form-control" ng-model="search" placeholder="Search battle by {{selectedType}}" uib-typeahead="find for find in Location | filter:$viewValue | limitTo:10">
+      								<span class="input-group-btn">
+       							    <button class="btn btn-primary" ng-click="searchSpecific()" type="button"><span class="glyphicon glyphicon-search"></span> </button>
+     							    </span>
+  							    </div><!-- /input-group -->
+						</div>
+						<div class="col-md-2">
+							{{message}}
+						</div>
+					</div>
+					<div class="row" id="display-data">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-2 header-box">
+									<label>Name</label>
+								</div>
+								<div class="col-md-1 header-box">
+									<label>Year</label>
+								</div>
+								<div class="col-md-2 header-box">
+									<label>Attacker King</label>
+								</div>
+								<div class="col-md-2 header-box">
+									<label>Defender King</label>
+								</div>
+								<div class="col-md-1 header-box">
+									<label>Result</label>
+								</div>
+								<div class="col-md-2 header-box">
+									<label>Battle type</label>
+								</div>
+								<div class="col-md-2 header-box">
+									<label>Location</label>
+								</div>
+								
+							</div>
+							<div class="row" ng-repeat="gotbattle in gotData.slice(((currentPage-1)*itemsPerPage),((currentPage)*itemsPerPage))">
+								<div class="col-md-2 body-box">
+									{{gotbattle.name}}
+								</div>
+								<div class="col-md-1 body-box">
+									{{gotbattle.year}}
+								</div>
+								<div class="col-md-2 body-box">
+									{{gotbattle.attacker_king}}
+								</div>
+								<div class="col-md-2 body-box">
+									{{gotbattle.defender_king}}
+								</div>
+								<div class="col-md-1 body-box">
+									{{gotbattle.attacker_outcome}}
+								</div>
+								<div class="col-md-2 body-box">
+									{{gotbattle.battle_type}}
+								</div>
+								<div class="col-md-2 body-box">
+									{{gotbattle.location}}
+								</div>
+							</div>
+							
+							
+							</div>
+						</div>
+						 
+							<div class="row" id="pagination-handler">
+								<div class="col-md-12">
+									<ul uib-pagination total-items="totalItems" max-size="maxSize" ng-model="currentPage" ng-change="pageChanged(currentPage)" items-per-page="itemsPerPage" boundary-links="true"></ul>
+								</div>
+							</div>	
+					
+				</div><!-- /.col-md-10 #left-panel -->
+				
+				<div class="col-md-2" id="right-panel">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="btn-group" role="group" aria-label="...">
+  								<button type="button" class="btn btn-primary btn-sm" ng-click="getAllBattleDetails()">All Battles</button>
+  								<button type="button" class="btn btn-primary btn-sm" ng-click="getCountOfTotalBattles()">Count Total</button>
+							</div>
+						</div>
+					</div>
+										
+					<div class="row">
+						<div class="col-md-12">
+							<h4>Crazy facts! (stats)</h4>
+						</div>
+					</div>
+					<hr/>
+					
+					<!-- mainly for stats -->
+				</div><!-- /.col-md-2 #right-panel -->
+				
+			</div><!-- row -->
+		</div>
+		<!-- main code ends! -->
+		
+		<!-- core scripts -->
+		<script type="text/javascript" src="../javascript/app_scripts/jquery.js"></script>
+		<script type="text/javascript" src="../javascript/app_scripts/angular.min.js"></script>
+		<script type="text/javascript" src="../javascript/app_scripts/pace.min.js"></script>
+		<script type="text/javascript" src="../javascript/app_scripts/angular-animate.min.js"></script>
+		<script type="text/javascript" src="../javascript/app_scripts/ui-bootstrap-tpls-1.3.3.min.js"></script>	
+		<script type="text/javascript" src="../stylesheets/bootstrap/js/bootstrap.min.js"></script>	
+		<script type="text/javascript" src="../javascript/app_scripts/app.js"></script>
+	</body>
+</html>
